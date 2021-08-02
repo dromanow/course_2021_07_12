@@ -5,7 +5,13 @@ const BookItem = ({book, authors}) => {
         <tr>
             <td>{book.id}</td>
             <td>{book.name}</td>
-            <td>{book.authors.map((authorId) => { return authors.find((author) => author.id == authorId ).last_name } )}</td>
+            <td>{book.authors.map((authorId) => {
+                let author = authors.find((author) => author.id == authorId )
+                if (author) {
+                    return author.last_name
+                }
+            } )}
+            </td>
         </tr>
     )
 }
