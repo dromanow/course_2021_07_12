@@ -16,14 +16,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter, SimpleRouter
+from rest_framework.authtoken.views import obtain_auth_token
 from authors.views import AuthorViewSet, BookViewSet, BiographyViewSet
+# from authors.views import AuthorView
 
-router = SimpleRouter()
-router.register('authors', AuthorViewSet)
+router = DefaultRouter()
+router.register('authors', AuthorViewSet, basename='authors')
 router.register('books', BookViewSet)
 router.register('biography', BiographyViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api-token-auth/', obtain_auth_token)
+    # path('api/filter/kwargs/<str:first_name>/', AuthorListAPIView.as_view())
+    # path('api/authors/', AuthorView.as_view()),
+    # path('api/authors/<int:pk>/', AuthorRetrieveAPIView.as_view()),
+    # path('api/authors/<int:pk>/', AuthorDestroyAPIView.as_view())
+    # path('api/authors/', get_authors)
 ]

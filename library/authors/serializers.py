@@ -7,21 +7,21 @@ class AuthorSerializer(ModelSerializer):
         model = Author
         fields = '__all__'
         
-    def create(self, validated_data):
-        res = super(AuthorSerializer, self).create(validated_data)
-        res.birthday_year = 'zaaa'
-        res.save()
-        return res
+    # def create(self, validated_data):
+    #     res = super(AuthorSerializer, self).create(validated_data)
+    #     res.birthday_year = 'zaaa'
+    #     res.save()
+    #     return res
 
 
-class BiographySerializer(HyperlinkedModelSerializer):
+class BiographySerializer(ModelSerializer):
     class Meta:
         model = Biography
         fields = '__all__'
 
 
 class BookSerializer(ModelSerializer):
-    authors = AuthorSerializer(many=True)
+    # authors = AuthorSerializer(many=True)
 
     class Meta:
         model = Book
