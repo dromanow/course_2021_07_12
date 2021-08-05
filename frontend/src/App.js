@@ -123,41 +123,44 @@ class App extends React.Component {
         return (
         <div>
             <HashRouter>
-              <header>
-            <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-                <a className="navbar-brand" href="#">DRF</a>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                  <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarCollapse">
-                  <ul className="navbar-nav mr-auto">
-                    <li className="nav-item active">
-                       <Link className="nav-link" to='/'>Authors</Link>
-                    </li>
-                    <li className="nav-item active">
-                        <Link className="nav-link" to='/books'>Books</Link>
-                    </li>
-                    <li className="nav-item active">
-                        {this.is_auth() ? <a className="nav-link" onClick={() => this.logout()}>Logout</a> : <Link className="nav-link" to='/login'>Login</Link> }
-                    </li>
-                  </ul>
-                </div>
-              </nav>
-              </header>
+                <header>
+                    <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+                        <a className="navbar-brand" href="#">DRF</a>
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+                        <div className="collapse navbar-collapse" id="navbarCollapse">
+                            <ul className="navbar-nav mr-auto">
+                                <li className="nav-item active">
+                                    <Link className="nav-link" to='/'>Authors</Link>
+                                </li>
+                                <li className="nav-item active">
+                                    <Link className="nav-link" to='/books'>Books</Link>
+                                </li>
+                                <li className="nav-item active">
+                                    {this.is_auth() ?
+                                        <a className="nav-link" onClick={() => this.logout()}>Logout</a> :
+                                        <Link className="nav-link" to='/login'>Login</Link> }
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </header>
                 <main role="main" class="flex-shrink-0">
-<div className="container">
+                    <div className="container">
 
-            <Switch>
-                <Route exact path='/' component={() => <AuthorList authors={this.state.authors} />} />
-                <Route exact path='/books' component={() => <BookList books={this.state.books} authors={this.state.authors} />} />
-                <Route exact path='/login' component={() => <LoginForm get_token={(login, password) => this.get_token(login, password)} />} />
-                <Redirect from='/authors' to='/' />
-                <Route path='/author/:id'>
-                    <AuthorBooksList books={this.state.books} />
-                </Route>
-                <Route component={Page404} />
-            </Switch>
-                </div>
+                        <Switch>
+                            <Route exact path='/' component={() => <AuthorList authors={this.state.authors} />} />
+                            <Route exact path='/books' component={() => <BookList books={this.state.books} authors={this.state.authors} />} />
+                            <Route exact path='/login' component={() => <LoginForm get_token={(login, password) => this.get_token(login, password)} />} />
+                            <Redirect from='/authors' to='/' />
+                            <Route path='/author/:id'>
+                                <AuthorBooksList books={this.state.books} />
+                            </Route>
+                            <Route component={Page404} />
+                        </Switch>
+
+                    </div>
                 </main>
             </HashRouter>
         </div>
