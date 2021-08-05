@@ -8,6 +8,8 @@ import AuthorBooksList from './components/AuthorBooks.js'
 import LoginForm from './components/LoginForm.js'
 import {HashRouter, BrowserRouter, Route, Link, Switch, Redirect} from 'react-router-dom'
 import Cookies from 'universal-cookie'
+import './bootstrap/css/bootstrap.min.css'
+import './bootstrap/css/sticky-footer-navbar.css'
 
 
 const Page404 = ({location}) => {
@@ -88,6 +90,7 @@ class App extends React.Component {
     }
 
     get_token(login, password) {
+    console.log(login, password);
         axios.post('http://127.0.0.1:8000/api-token-auth/',
         {
             "username": login,
@@ -120,19 +123,30 @@ class App extends React.Component {
         return (
         <div>
             <HashRouter>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to='/'>Authors</Link>
+              <header>
+            <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+                <a className="navbar-brand" href="#">DRF</a>
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                  <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarCollapse">
+                  <ul className="navbar-nav mr-auto">
+                    <li className="nav-item active">
+                       <Link className="nav-link" to='/'>Authors</Link>
                     </li>
-                    <li>
-                        <Link to='/books'>Books</Link>
+                    <li className="nav-item active">
+                        <Link className="nav-link" to='/books'>Books</Link>
                     </li>
-                    <li>
-                        {this.is_auth() ? <button onClick={() => this.logout()}>Logout</button> : <Link to='/login'>Login</Link> }
+                    <li className="nav-item active">
+                        {this.is_auth() ? <a className="nav-link" onClick={() => this.logout()}>Logout</a> : <Link className="nav-link" to='/login'>Login</Link> }
                     </li>
-                </ul>
-            </nav>
+                  </ul>
+                </div>
+              </nav>
+              </header>
+                <main role="main" class="flex-shrink-0">
+<div className="container">
+
             <Switch>
                 <Route exact path='/' component={() => <AuthorList authors={this.state.authors} />} />
                 <Route exact path='/books' component={() => <BookList books={this.state.books} authors={this.state.authors} />} />
@@ -143,6 +157,8 @@ class App extends React.Component {
                 </Route>
                 <Route component={Page404} />
             </Switch>
+                </div>
+                </main>
             </HashRouter>
         </div>
         )
