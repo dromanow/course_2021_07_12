@@ -76,7 +76,9 @@ from rest_framework.authtoken.models import Token
 class AuthorViewSet(ModelViewSet):
     serializer_class = AuthorSerializer
     queryset = Author.objects.all()
-    permission_classes = [DjangoModelPermissions]
+
+
+    # permission_classes = [DjangoModelPermissions]
     # filterset_fields = ['first_name', 'last_name']
     # pagination_class = AuthorPagination
 
