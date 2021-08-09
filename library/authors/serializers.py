@@ -14,6 +14,12 @@ class AuthorSerializer(ModelSerializer):
     #     return res
 
 
+class AuthorSerializerV2(ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['first_name', 'last_name']
+
+
 class BiographySerializer(ModelSerializer):
     class Meta:
         model = Biography

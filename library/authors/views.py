@@ -6,7 +6,7 @@ from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, action
 from .models import Author, Book, Biography
-from .serializers import AuthorSerializer, BiographySerializer, BookSerializer
+from .serializers import AuthorSerializer, AuthorSerializerV2, BiographySerializer, BookSerializer
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, \
     IsAuthenticatedOrReadOnly, DjangoModelPermissionsOrAnonReadOnly, DjangoModelPermissions
@@ -74,8 +74,12 @@ from rest_framework.authtoken.models import Token
 
 
 class AuthorViewSet(ModelViewSet):
-    serializer_class = AuthorSerializer
     queryset = Author.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.version == 'v2':
+            return AuthorSerializerV2
+        return AuthorSerializer
 
 
     # permission_classes = [DjangoModelPermissions]
