@@ -6,6 +6,7 @@ import AuthorList from './components/Authors.js'
 import BookList from './components/Books.js'
 import AuthorBooksList from './components/AuthorBooks.js'
 import LoginForm from './components/LoginForm.js'
+import BookForm from './components/BookForm.js'
 import {HashRouter, BrowserRouter, Route, Link, Switch, Redirect} from 'react-router-dom'
 import Cookies from 'universal-cookie'
 import './bootstrap/css/bootstrap.min.css'
@@ -41,14 +42,9 @@ class App extends React.Component {
     get_headers() {
         let header = {
             'Content-Type': 'application/json'
-            'Accept': 'application/json; version=v2'
         }
         const cookie = new Cookies()
-//        cookie.set('token', response.data.token)
-//                console.log(cookie.get('token'))
-
         header['Authorization'] = 'Token ' + cookie.get('token')
-
         return header;
     }
 
@@ -120,6 +116,51 @@ class App extends React.Component {
         this.get_token_from_storage()
     }
 
+    deleteBook(id) {
+        const headers = this.get_headers()
+
+        axios.delete(`http://127.0.0.1:8000/api/books/${id}/`, {headers})
+        .then(
+            response => {
+//                this.setState({
+//                    'books': this.state.books.filter((book) => book.id !== id)
+//                })
+                this.get_data()
+            }
+        ).catch(
+            error => {
+                console.log(error)
+            }
+        )
+    }
+
+    createBook(name, authors) {
+
+
+        if (!name || authors.length==0) {
+            console.log("Empty params:", name, authors)
+            return;
+        }
+
+        const headers = this.get_headers()
+
+        axios.post('http://127.0.0.1:8000/api/books/',
+            {
+                "name": name,
+                "authors": authors
+            },
+            {headers})
+        .then(
+            response => {
+                this.get_data()
+            }
+        ).catch(
+            error => {
+                console.log(error)
+            }
+        )
+    }
+
     render() {
         return (
         <div>
@@ -139,6 +180,9 @@ class App extends React.Component {
                                     <Link className="nav-link" to='/books'>Books</Link>
                                 </li>
                                 <li className="nav-item active">
+                                    <Link className="nav-link" to='/books/create'>Create book</Link>
+                                </li>
+                                <li className="nav-item active">
                                     {this.is_auth() ?
                                         <a className="nav-link" onClick={() => this.logout()}>Logout</a> :
                                         <Link className="nav-link" to='/login'>Login</Link> }
@@ -152,7 +196,17 @@ class App extends React.Component {
 
                         <Switch>
                             <Route exact path='/' component={() => <AuthorList authors={this.state.authors} />} />
-                            <Route exact path='/books' component={() => <BookList books={this.state.books} authors={this.state.authors} />} />
+                            <Route exact path='/books' component={() => <BookList
+                                books={this.state.books}
+                                authors={this.state.authors}
+                                deleteBook={(id) => this.deleteBook(id)}
+                             />} />
+                            <Route exact path='/books/create' component={() =>
+                                <BookForm
+                                    authors={this.state.authors}
+                                    createBook={(name, authors) => this.createBook(name, authors)}
+                                />}
+                            />
                             <Route exact path='/login' component={() => <LoginForm get_token={(login, password) => this.get_token(login, password)} />} />
                             <Redirect from='/authors' to='/' />
                             <Route path='/author/:id'>

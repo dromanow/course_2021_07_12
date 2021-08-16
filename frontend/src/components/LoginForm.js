@@ -1,17 +1,4 @@
 import React from 'react'
-//import axios from 'axios'
-//import logo from './logo.svg';
-//import './App.css';
-//import AuthorList from './components/Authors.js'
-//import BookList from './components/Books.js'
-//import AuthorBooksList from './components/AuthorBooks.js'
-//import {HashRouter, BrowserRouter, Route, Link, Switch, Redirect} from 'react-router-dom'
-
-//const Page404 = ({location}) => {
-//    return <div>
-//        Page {location.pathname} not found.
-//    </div>
-//}
 
 
 class LoginForm extends React.Component {
