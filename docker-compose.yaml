@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:13.4
+    privileged: true
+    restart: always
+    ports:
+      - 54321:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_DB: db
+  backend:
+    build: ./library
+    privileged: true
+    ports:
+      - 8080:8080
+    command:
+      bash -c "
+        ./wait-for-postgres.sh db &&
+        python manage.py migrate &&
+        gunicorn library.wsgi -b 0.0.0.0:8080
+      "
+    depends_on:
+      - db
+  nginx:
+    build: ./nginx
+    ports:
+      - 8000:80
+    depends_on:
+      - backend
+  frontend:
+    build: ./frontend
+    ports:
+      - 80:80
+    depends_on:
+      - nginx
